@@ -4,7 +4,7 @@ if ( isset($_POST['submit']))
 	//geef het pad op naar het bestand LoginClass.php
 	require_once ('class/LoginClass.php');
 	//kijkt in de tabel login of het emailadres al bestaat
-	if ( LoginClass::emailaddress_exists($_POST['email']) )
+	if ( LoginClass::emailaddress_exists($_POST['email']))
 	{
 		/*meldt dat het emailadres al in gebruik is en dat er een ander adres gekozen moet worden*/
 		echo "het ingevulde emailadres is al in gebruik.<br /> vul een nieuw emailadres in. <br />
@@ -71,7 +71,7 @@ else
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
-			<td><input type='submit' name='submit' /></td>
+			<td><input type='submit' name='submit' value='Verstuur' /></td>
 		</tr>
 	</table>
 </form>
