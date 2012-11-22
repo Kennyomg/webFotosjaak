@@ -1,15 +1,17 @@
 <?php 
-	require_once("class/MySqlDatabaseClass");
-	$query = "INSERT INTO `login` ( `id`,
-										`username`,
-										`password`,
-										`userrole`,
-										`activated`)
-							VALUES 	  (	NULL,
-										'test@gmail.com',
-										'geheim',
-										'sjaak',
-										'yes')";
-	//echo $query."<br />";
+	require_once('class/MySqlDatabaseClass.php');
+	$query = "INSERT INTO `login`	(`id`,
+									 `username`,
+									 `pass`,
+									 `userrole`,
+									 `activated`)
+						VALUES	  ( Null,
+									'test@gmail.com',
+									'geheim',
+									'sjaak',
+									'yes')";
+	
+		
 	$database->fire_query($query);
-?>
+?>				
+dit is een test voor de database class
