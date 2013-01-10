@@ -1,30 +1,88 @@
-<?php
-if ( isset($_POST['submit']))
-{
-	//geef het pad op naar het bestand LoginClass.php
-	require_once ('class/LoginClass.php');
-	//kijkt in de tabel login of het emailadres al bestaat
-	if ( LoginClass::emailaddress_exists($_POST['email']))
+<style type="text/css">
+	p.error
 	{
-		/*meldt dat het emailadres al in gebruik is en dat er een ander adres gekozen moet worden*/
-		echo "het ingevulde emailadres is al in gebruik.<br /> vul een nieuw emailadres in. <br />
-		u wordt door gestuurd naar de registratie pagina.";
-		header('refresh:4;url=register.php');
+		background-color:RGBA(240,240,240,1.0);
+		color:RGBA(240,0,0,0.4);	
+		width:400px;
+	}
+</style>
+
+<script type='text/javascript'>
+	$( function() {
+		$('#eventForm').validate({
+			rules: {				
+				firstname: "required",
+				surname: "required",
+				address: "required",
+				addressnumber: {				
+					required: true,
+					number: true
+				},
+				city: "required",
+				zipcode: "required",
+				country: "required",
+				telephonenumber: "required",
+				mobilenumber: "required",
+				email: {
+					required: true,
+					email: true
+				}
+			},
+			messages: {
+				firstname: "<p class='error'>Het bovenstaande veld is verplicht</p>",
+				surname: "<p class='error'>Het bovenstaande veld is verplicht</p>",
+				address: "<p class='error'>Het bovenstaande veld is verplicht</p>",
+				addressnumber: {
+					required: "<p class='error'>Het bovenstaande veld is verplicht</p>",
+					number: "<p class='error'>Dit is geen huisnummer</p>"
+				},
+				city: "<p class='error'>Het bovenstaande veld is verplicht</p>",
+				zipcode: "<p class='error'>Het bovenstaande veld is verplicht</p>",
+				country: "<p class='error'>Het bovenstaande veld is verplicht</p>",
+				telephonenumber: "<p class='error'>Het bovenstaande veld is verplicht</p>",
+				mobilenumber: "<p class='error'>Het bovenstaande veld is verplicht</p>",
+				email: {
+					required: "<p class='error'>Het bovenstaande veld is verplicht</p>",
+					email: "<p class='error'>Dit is ongeldig email adres</p>"
+				}
+			}
+		});
+	});
+</script>
+
+
+<?php
+ if (isset($_POST['submit'] ))
+ {
+	//Geef het pad op naar het bestand LoginClass.php
+	require_once('class/LoginClass.php');
+	
+	//Kijk in de tabel login of het gegeven e-mailadres al bestaat
+	if ( LoginClass::emailaddress_exists($_POST['email']) )
+	{
+		//Meldt dat het emailadres al in gebruik
+		//is en dat er een ander gekozen moet worden.
+		echo "Het ingevulde emailadres is al in gebruik.<br />
+			  kies een ander emailadres. U wordt doorgestuurd naar<br />
+			  de registratiepagina.";
+		header("refresh:4;url=index.php?content=register" );
 	}
 	else
 	{
-	//schrijf alle gegevens naar de database
+		//Schrijf alle gegevens naar de database
 		LoginClass::insert_into_login($_POST);
-	//verstuur een email met een activatielink	
-	}
-}
-else
-{
-
+		echo "U bent succesvol geregistreerd. U ontvangt een activatiemail in uw mailbox<br />
+			  Na het activeren van uw account kunt u inloggen op de site";
+		header("refresh:3;url=index.php");
+		//verstuur een e-mail met een activatielink.
+	} 
+ }
+ else
+ {
 ?>
-
-<form action='register.php' method='post'>
+<form action='index.php?content=register' method='post' id='eventForm'>
 	<table>
+		<caption>Register</caption>
 		<tr>
 			<td>firstname</td>
 			<td><input type='text' name='firstname' /></td>
@@ -42,8 +100,8 @@ else
 			<td><input type='text' name='address' /></td>
 		</tr>
 		<tr>
-			<td>addressnr</td>
-			<td><input type='text' name='addressnr' /></td>
+			<td>addressnumber</td>
+			<td><input type='text' name='addressnumber' /></td>
 		</tr>
 		<tr>
 			<td>city</td>
@@ -58,23 +116,23 @@ else
 			<td><input type='text' name='country' /></td>
 		</tr>
 		<tr>
-			<td>phonenumber</td>
-			<td><input type='text' name='phonenumber' /></td>
+			<td>telephonenumber</td>
+			<td><input type='text' name='telephonenumber' /></td>
 		</tr>
 		<tr>
 			<td>mobilenumber</td>
 			<td><input type='text' name='mobilenumber' /></td>
 		</tr>
 		<tr>
-			<td>email</td>
+			<td>e-mail</td>
 			<td><input type='text' name='email' /></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
-			<td><input type='submit' name='submit' value='Verstuur' /></td>
+			<td><input type='submit' name='submit' /></td>
 		</tr>
 	</table>
 </form>
 <?php
-}
+ }
 ?>
