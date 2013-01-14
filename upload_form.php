@@ -1,4 +1,6 @@
 <?php
+	require_once("class/PhotoClass.php");
+
 	if(isset($_POST['submit']))
 	{
 		//var_dump($_FILES['foto']);
@@ -41,14 +43,40 @@
 			}
 
 			$thumb = imagecreatetruecolor($tn_width, $tn_height);
-			$source = imagecreatefromjpeg($path_photo);
-			imagecopyresampled($thumb, $source, 0, 0, 0, 0, $tn_width, $tn_height, $specs_image[0], $specs_image[1]);
-			imagejpeg($thumb, $path_thumbnail, 100);
+
+			//Kijk welk mime-type de foto is.
+			switch($_FILES['foto']['type'])
+			{
+				case 'image/jpeg':
+					$source = imagecreatefromjpeg($path_photo);
+					imagecopyresampled($thumb, $source, 0, 0, 0, 0, $tn_width, $tn_height, $specs_image[0], $specs_image[1]);
+					imagejpeg($thumb, $path_thumbnail, 100);
+				break;
+				case 'image/png':
+					$source = imagecreatefrompng($path_photo);
+					imagecopyresampled($thumb, $source, 0, 0, 0, 0, $tn_width, $tn_height, $specs_image[0], $specs_image[1]);
+					imagepng($thumb, $path_thumbnail, 9);
+				break;
+				case 'image/gif':
+				case 'image/png':
+					$source = imagecreatefromgif($path_photo);
+					imagecopyresampled($thumb, $source, 0, 0, 0, 0, $tn_width, $tn_height, $specs_image[0], $specs_image[1]);
+					imagegif($thumb, $path_thumbnail);
+				break;
+				default:
+				break;
+			}
+
+			PhotoClass::insert_into_photo($_POST['order_id'], $_FILES['foto']['name'], $_POST['beschrijving']);
+			echo "Het uploaden van betand met de naam: ".$_FILES['foto']['name']." is niet toegestaan.
+			U word doorgestuurd naar de uploadpagina";
+			header("refresh:4;url=index.php?content=upload_form&user_id=".$_POST["user_id"]."&order_id=".$_POST["order_id"]);
+		
 
 		}
 		else
 		{
-			echo "Het uploaden van betanden met de extentie: ".$_FILES['foto']['type']." is niet toegestaan.
+			echo "Het uploaden van betanden met de extentie: ".$_FILES['foto']['type']." is voltooid.
 			U word doorgestuurd naar de uploadpagina";
 			header("refresh:4;url=index.php?content=upload_form&user_id=".$_POST["user_id"]."&order_id=".$_POST["order_id"]);
 		}
@@ -58,6 +86,10 @@
 	else
 	{
 ?>
+		<table>
+			<?php PhotoClass::show_photos($_GET["user_id"],$_GET["order_id"]);?>
+		</table>
+		
 		<form action='index.php?content=upload_form' method'post' enctype='multipart/form-data' >
 			<table>
 				<tr>
