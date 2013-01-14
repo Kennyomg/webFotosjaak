@@ -10,6 +10,9 @@
 				case 'customer':
 					echo "<li>
 							<a href='index.php?content=opdracht'>opdracht plaatsen</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=opdracht_customer'>geplaatsten opdrachten</a>
 						  </li>";					
 					break;
 				case 'sjaak':
