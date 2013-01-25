@@ -13,11 +13,20 @@
 						  </li>
 						  <li>
 							<a href='index.php?content=opdracht_customer'>geplaatsten opdrachten</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=changedata'>wijzig gegevens</a>
 						  </li>";					
 					break;
 				case 'sjaak':
 					echo "<li>
 							<a href='index.php?content=opdrachten'>opdrachten</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=view_registration'>wijzig gegevens klanten</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=changedata'>wijzig gegevens</a>
 						  </li>
 						 ";
 					break;

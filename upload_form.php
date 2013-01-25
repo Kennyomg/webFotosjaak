@@ -58,6 +58,10 @@
 					imagepng($thumb, $path_thumbnail, 9);
 				break;
 				case 'image/gif':
+					$source = imagecreatefromgif($path_photo);
+					imagecopyresampled($thumb,$source,0,0,0,0,$tn_width,$tn_height,$specs_image[0],$specs_image[1]); 		
+					imagegif($thumb,$path_thumbnail);
+		
 				case 'image/png':
 					$source = imagecreatefromgif($path_photo);
 					imagecopyresampled($thumb, $source, 0, 0, 0, 0, $tn_width, $tn_height, $specs_image[0], $specs_image[1]);
