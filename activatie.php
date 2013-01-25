@@ -19,7 +19,6 @@
 	}
  }
  else
- {
 	 if (LoginClass::check_email_password_exists($_GET['em'], $_GET['pw']))
 	 {
 	?>
@@ -53,5 +52,5 @@
 		echo "U heeft geen rechten op deze pagina. U wordt doorgestuurd naar de index";
 		header("refresh:3;url=index.php");
 	 }
- } 
+ 
 ?>

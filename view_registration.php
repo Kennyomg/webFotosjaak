@@ -4,7 +4,7 @@ require_once("class/UserClass.php");
 include("functions/functions.php");
 if ( isset($_POST['submit']))
 {
-	UserClass::ChangeData($_POST);
+	UserClass::ChangeDataSjaak($_POST);
 					
 	echo "U wijzigingen zijn verwerkt";
 
@@ -20,8 +20,8 @@ if ( isset($_GET['ID']) )
 
 
 				
-					
-		<form action='index.php?content=view_registration'method='post'>
+		<form action='index.php?content=view_registration' method='post'>
+		<!--<form action='<?php //echo "index.php?content=view_registration&ID=".$_POST["id"] ?>' method='post'> -->
 		<table>
 		<?php UserClass::find_customers($_POST); ?>
 		</table>

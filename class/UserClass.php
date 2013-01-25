@@ -79,13 +79,36 @@
 				  AND
 				  `login`.`id` = '".$_SESSION["user_id"]."'";
 				  $database->fire_query($query);
-				 header("refresh:4;index.php?content=home");
+				 header("refresh:4;index.php?content=homepage");
+	}
+	public static function ChangeDataSjaak($postArray)
+	{
+		global $database;
+		
+		$query = "UPDATE `user`,`login`
+			  SET `user`.`firstname` = '".safetext($postArray["vn"])."', 
+			      `user`.`infix` = '".safetext($postArray["tv"])."', 
+				  `user`.`surname`= '".safetext($postArray["an"])."', 
+				  `user`.`address`= '".safetext($postArray["stra"])."', 
+				  `user`.`addressnumber`= '".safetext($postArray["huisnr"])."', 
+				  `user`.`city`= '".safetext($postArray["Stad"])."', 
+				  `user`.`zipcode` = '".safetext($postArray["pc"])."', 
+				  `user`.`country`= '".safetext($postArray["land"])."', 
+				  `user`.`telephonenumber`= '".safetext($postArray["tel"])."', 
+				  `user`.`mobilenumber`= '".safetext($postArray["mob"])."', 
+				  `login`.`username` = '".safetext($postArray["email"])."', 
+				  `login`.`password`= '".safetext($postArray["wacht"])."'
+				  WHERE `user`.`id` = '".$_POST["id"]."'
+				  AND
+				  `login`.`id` = '".$_POST["id"]."'";
+				  $database->fire_query($query);
+				 header("refresh:4;index.php?content=homepage");
 	}
 	public static function find_users($postArray)
 	{
 			global $database;
 			
-			$query = "Select * from `user`,`login`";
+			$query = "Select * from `user`,`login` WHERE `user`.`id` = '".$_SESSION['user_id']."'";
 			 $result = $database->fire_query($query);
 			 $record = mysql_fetch_array($result);	
 				
@@ -224,10 +247,11 @@
 		<td>Wachtwoord</td>
 		<td><input type ='password' name= 'wacht' value = '".$record['password']."' /></td>
 		</tr>
-		
+		<input type='hidden' name='id' value='".$_GET['ID']."' />
 		<tr>
 		<td><input type='submit' name='submit' value='submit'/></td>
-		</tr>";
+		</tr>
+		";
 		
 	}
 	
