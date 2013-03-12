@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Foto Sjaak</title>
+		<title>gamelibrary</title>
 		<link rel='stylesheet' type='text/css' href='./css/style.css' />
 		<link rel='stylesheet' type='text/css' href='./css/custom-theme/jquery-ui-1.9.2.custom.css'/>
 		<script style='text/javascript' src='./jquery/jquery-1.8.3.js'></script>

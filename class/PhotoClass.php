@@ -1,45 +1,48 @@
 <?php
-require_once("MySqlDatabaseClass.php");
-define('NUMBER_OF_PHOTOS', 3 );
-	class PhotoClass
-	{
+ require_once("class/MySqlDatabaseClass.php");
+ define('NUMBER_OF_PHOTOS', 3);
+ 
+ class PhotoClass
+ {
+	//Fields
+	private $photo_id;
+	private $order_id;
+	private $photo_name;
+	private $photo_text;
 	
-		// fields
-		private $foto_id;
-		private $order_id;
-		private $photo_name;
-		private $photo_text;
-		
-		// contructor
-		
-		public static function find_by_sql( $query )	
-		{
-			global $database;// globale variable database
-			$result = $database->fire_query( $query);//vestuurt het resulataat naar de database
-			$object_array = array();
-			
-			while ($row = mysql_fetch_object ( $result ) )
-			{
-			 $object = new PhotoClass();
-			 $object->photo_id = $row->photo_id;
-			 $object->order_id= $row->order_id;
-			 $object->photo_name = $row->photo_name;
-			 $object->photo_text = $row->photo_text;
-			 $object_array[] = $object;
-			 
-			}
-			return $object_array;// vraagt de array object_arrray terug met de de nieuwe invormatie
-		}
-		
-		public static function insert_into_photo($order_id,$photo_name,$photo_text)
-		{
+	public static function find_by_sql( $query )
+	{
 		global $database;
-			$query = "INSERT INTO `photo` (`photo_id`, `order_id`, `photo_name`, `photo_text`) VALUES (NULL, '".$order_id."', '".$photo_name."', '".$photo_text."');";
-			$database->fire_query( $query );
-		}
-		
-		public static function show_photos($order_id, $user_id)
+		$result = $database->fire_query( $query );
+		$object_array = array();
+		while ( $row = mysql_fetch_object( $result ) )
 		{
+			$object = new PhotoClass();
+			$object->photo_id = $row->photo_id;
+			$object->order_id = $row->order_id;
+			$object->photo_name = $row->photo_name;
+			$object->photo_text = $row->photo_text;	
+			$object_array[] = $object;		
+		}
+		return $object_array;
+	}
+	
+	public static function insert_into_photo($order_id, $photo_name, $photo_text)
+	{
+		global $database;
+		$query = "INSERT INTO `photo` ( `photo_id`,
+										`order_id`,
+										`photo_name`,
+										`photo_text`)
+							 VALUES    ( Null,
+										'{$order_id}',
+										'{$photo_name}',
+										'{$photo_text}')";
+		$database->fire_query($query);
+	} 
+	
+	public static function show_photos($user_id, $order_id)
+	{
 		$query = "SELECT * FROM `photo` WHERE `order_id` = '{$order_id}'";
 		$result = self::find_by_sql($query);
 		//var_dump($result);
@@ -81,6 +84,5 @@ define('NUMBER_OF_PHOTOS', 3 );
 				  </tr>";
 		}
 	}
-	}
-
+ }
 ?>

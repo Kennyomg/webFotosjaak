@@ -71,7 +71,7 @@
 									   `orderdate`,
 									   `confirmed`,
 									   `charge`,
-									   `confirm_charge`,
+									   `confirm_charge`
 									   `paid`) 
 							  VALUES ( Null,
 									   '".$_SESSION['user_id']."',
@@ -184,26 +184,28 @@
 		{
 			//var_dump($object);
 			$current = $object->user_id;
-			if ( $current != $previous)
+			if ( $current != $previous )
 			{
 				$rows .= "<tr>
-						  	<td colspan='5'>
-						  		id = [".$object->user_id."] "
-						  		       .$object->firstname." "
-						  		       .$object->infix." "
-						  		       .$object->surname."
-						  	</td>
+							<td colspan='5' >
+								id = [".$object->user_id."] "
+									   .$object->firstname." "
+									   .$object->infix." "
+									   .$object->surname."
+							</td>
 						  </tr>";
 			}
 			$previous = $current;
+			
 			if ($object->charge == 0.00)
-						{
-							$charge = "<a href='index.php?content=pricetag&user_id={$object->user_id}&order_id={$object->order_id}'>".$object->charge."</a>";
-						}
-						else
-						{ 
-							$charge = $object->charge;
-						}
+			{
+				$charge = "<a href='index.php?content=pricetag&order_id={$object->order_id}&user_id={$object->user_id}'>".$object->charge."</a>";
+			}
+			else
+			{
+				$charge = $object->charge;
+			}
+			
 			$rows .= "<tr>
 						<td>".$object->order_id."</td>
 						<td>".$object->order_short."</td>
@@ -214,7 +216,9 @@
 						</td>
 						<td>".$object->number_of_pictures."</td>
 						<td>".DbFormat::translate_color($object->color_pictures)."</td>
-						<td>".DbFormat::translate_paid($object->paid)."</td>
+						<td>
+							<a href='index.php?content=update_paid&order_id={$object->order_id}&charge={$object->charge}'>".DbFormat::translate_paid($object->paid)."</a>
+						</td>
 						<td>".DbFormat::translate_confirmed($object->confirmed)."</td>
 						<td>{$charge}</td>
 						<td>
@@ -226,14 +230,17 @@
 		}
 		return $rows;
 	}
+	
 	public static function update_charge_by_id($order_id, $charge)
 	{
 		global $database;
-		$query =	"UPDATE  `order` SET `charge` =  '{$charge}' WHERE  `order_id` ='{$order_id}'";
+		$query = "UPDATE `order` SET `charge` = '{$charge}' WHERE `order_id` = '{$order_id}'";
 		$database->fire_query($query);
-		echo "De prijs word weggeschreven";
-		header("refresh:4;url=index.php?content=opdrachten");
+		self::send_pricetag_email($order_id);
+		echo "De prijs van de opdracht is weggeschreven naar de database. Er wordt een mailtje gestuurd naar de opdrachtgever";
+		header("refresh:400;url=index.php?content=opdrachten");		
 	}
+	
 	public static function find_orders_by_id()
 	{
 		global $database;
@@ -248,20 +255,23 @@
 		{
 			//var_dump($object);
 			$current = $object->user_id;
-			if ( $current != $previous)
+			if ( $current != $previous )
 			{
 				$rows .= "<tr>
-						  	<td colspan='5'>
-						  		id = [".$object->user_id."] "
-						  		       .$object->firstname." "
-						  		       .$object->infix." "
-						  		       .$object->surname."
-						  	</td>
+							<td colspan='9' >
+								id = [".$object->user_id."] "
+									   .$object->firstname." "
+									   .$object->infix." "
+									   .$object->surname."
+							</td>
 						  </tr>";
 			}
 			$previous = $current;
+			
 			$rows .= "<tr>
-						<td>".$object->order_id."</td>
+						<td>
+							<a href='index.php?content=show_fotos&user_id={$object->user_id}&order_id={$object->order_id}'>".$object->order_id."</a>
+						</td>
 						<td>".$object->order_short."</td>
 						<td>
 							Oplevering: ".DateFormat::change($object->deliverydate)."<br />
@@ -272,18 +282,119 @@
 						<td>".DbFormat::translate_color($object->color_pictures)."</td>
 						<td>".DbFormat::translate_paid($object->paid)."</td>
 						<td>".DbFormat::translate_confirmed($object->confirmed)."</td>
-						<td><a href='index.php?content=bevestigen_prijs&order_id={$object->order_id}&charge={$object->charge}'>{$object->charge}</a></td>
+						<td>";
+						if ($object->confirm_charge == 'no' && $object->charge != 0 )
+						{
+							$rows .= "<a href='index.php?content=bevestigen_prijs&order_id={$object->order_id}&charge={$object->charge}'>".round($object->charge, 0)."</a>";
+						}
+						else
+						{
+							$rows .= round($object->charge, 0);
+						}
+							$rows .="
+						</td>
+						<td>
+							{$object->confirm_charge}
+						</td>
 					  </tr>";
 		}
-		return $rows;
+		return $rows;	
 	}
+	
 	public static function confirm_charge_by_order_id($order_id)
 	{
 		global $database;
-		$query = "UPDATE `order` SET `confirmed` = 'yes' WHERE `order_id` = {$order_id}";
+		$query = "UPDATE `order` SET `confirm_charge` = 'yes' WHERE `order_id` = ' {$order_id}'";
 		$database->fire_query($query);
+		echo "U heeft de prijs bevestigd. U wordt doorgestuurd naar de opdrachten pagina";
+		header("refresh:4;url=index.php?content=opdrachten_customer");
 	}
-
+	
+	public static function confirm_paid_by_order_id($order_id)
+	{
+		global $database;
+		$query = "UPDATE `order` SET `paid` = 'yes' WHERE `order_id` = ' {$order_id}'";
+		$database->fire_query($query);
+		echo "U heeft de betaling bevestigd. U wordt doorgestuurd naar de opdrachten pagina";
+		header("refresh:4;url=index.php?content=opdrachten");
+	}
+	
+	public static function send_pricetag_email($order_id)
+	{
+		global $database;
+		$query = "SELECT * FROM `order`, `login`, `user`
+				  WHERE `order`.`order_id` = {$order_id}
+				  AND `order`.`user_id` = `login`.`id`
+				  AND `order`.`user_id` = `user`.`id`";
+		$result = $database->fire_query($query);
+		$object =  mysql_fetch_object($result);
+		//var_dump($object);
+		
+		$carbonCopy = "sjaak@fotosjaak.nl";
+		$blindCarbonCopy = "info@belastingdienst.nl";
+		$ontvanger = $object->username;
+		$password = "";
+		$onderwerp = "Prijsopgave".$object->order_short;
+		 
+		$bericht   = "Geachte heer/mevrouw <b>".$object->firstname.
+					 " ".$object->infix.
+					 " ".$object->surname."</b><br /><br />
+					  Wij hebben de onderstaande order van u ontvangen.<br />
+					  <table border='1'>
+						<tr>
+							<td>Uw order-id</td>
+							<td>".$object->order_id."</td>
+						</tr>
+						<tr>
+							<td>Korte omschrijving opdracht</td>
+							<td>".$object->order_short."</td>
+						</tr>
+						<tr>
+							<td>Uitgebreide omschrijving opdracht</td>
+							<td>".$object->order_long."</td>
+						</tr>
+						<tr>
+							<td>Opleveringsdatum</td>
+							<td>".$object->deliverydate."</td>
+						</tr>
+						<tr>
+							<td>Datum van het evenement</td>
+							<td>".$object->eventdate."</td>
+						</tr>
+						<tr>
+							<td>Uw foto's worden gemaakt in</td>
+							<td>".$object->color_pictures."</td>
+						</tr>
+						<tr>
+							<td>Aantal foto's dat wordt gemaakt</td>
+							<td>".$object->number_of_pictures."</td>
+						</tr>
+						<tr>
+							<td>Datum van de aanvraag</td>
+							<td>".date("d-m-Y", strtotime($object->orderdate))."</td>
+						</tr>
+						<tr>
+							<td>Tijdstip van de aanvraag</td>
+							<td>".date("H:i:s", strtotime($object->orderdate))."</td>
+						</tr>
+					  </table>
+					  Ik heb voor de bovenstaande opdracht een offerteprijs berekend van: ".round($object->charge, 2)."<br />
+					  U kunt via de website akkoord gaan met dit bedrag waarmee de transactie definitief is.<br />
+					  <br />
+					  Met vriendelijke groet,<br />
+					  <i><u>Sjaak de Vries</u></i><br />
+					  uw fotograaf";
+					  
+		$headers   = "From: info@fotosjaak.nl\r\n";
+		$headers  .= "Reply-To: info@fotosjaak.nl\r\n"; 
+		$headers  .= "Cc: ".$carbonCopy."\r\n";
+		$headers  .= "Bcc: ".$blindCarbonCopy."\r\n";
+		$headers  .= "X-mailer: PHP/".phpversion()."\r\n";
+		$headers  .= "MIME-version: 1.0\r\n";
+		$headers  .= "Content-Type: text/html; charset=iso-8859-1\r\n";
+		mail( $ontvanger, $onderwerp, $bericht, $headers );
+		header("refresh:4;url=index.php?content=opdrachten");
+	}
  }
  
  

@@ -165,14 +165,15 @@
 		$database->fire_query($query);
 	}
 	
-	public static function check_email_password_exists($email,$password)
+	public static function check_email_password_exists($email, $password)
 	{
-		global $database;
-		$query = "SELECT * FROM `login` WHERE `username`='".$email."'
-										and `password`='".$password."'";
-	    $record =	self::find_by_sql($query);
-			return ( sizeof($record) >= 0 ) ? true : false;
-			
+		$query = "SELECT * FROM `login`
+				  WHERE `username` = '".$email."'
+				  AND	`password` = '".$password."'";
+		$record = self::find_by_sql($query);
+		//ternary operator
+		$found = (sizeof($record) > 0) ? true : false;
+		return $found;
 	}
 	
 	public static function check_if_activated($email)

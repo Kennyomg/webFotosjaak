@@ -22,7 +22,7 @@ input[type=radio] { width:50px;}
 div#container
 {
 	border:0px solid red;
-	width:600px;
+	width:800px;
 	margin:20px auto;
 }
 
@@ -143,7 +143,7 @@ a:active
 
 #img-banner  { width:600px;}
 
-caption { font-weight:bold; text-align:left; font-size:1.4em; color:red; }
+caption { font-weight:normal; text-align:left; font-size:1.1em; color:grey; }
 
 img#prtsc { width:200px;}
 
