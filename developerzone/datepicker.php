@@ -1,6 +1,6 @@
 <script>
 $(document).ready(function() {
-  $("#datepicker").datepicker({dateFormat: 'dd-mm-yy', showWeek: true});
+  $("#datepicker").datepicker({dateFormat: 'yy-mm-dd', showWeek: true});
 });
 </script>
 

@@ -10,6 +10,7 @@
 
 }
 #box img{
+	margin-left: 30px;
 	position:absolute;
 }
 </style>
@@ -17,7 +18,7 @@
 <script>
 $(document).ready(function() {
 
-	$('#slider').slider({ max: 400,
+	$('#slider').slider({ max: 800,
 	   	min: 0,
 	   	orientation: 'horizontal',
 	   	value: 200,
@@ -38,9 +39,9 @@ $(document).ready(function() {
 });
 </script>
 
-<div id="slider">-</div>
+<div id="slider"></div>
 
 <div id="box">
 	<img src="./developerzone/img/kitten.jpg" alt="kitten"/>
 </div>
-<div id="slider2">+</div>
+<div id="slider2"></div>

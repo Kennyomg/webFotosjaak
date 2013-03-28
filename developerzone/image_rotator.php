@@ -20,7 +20,7 @@
 <p>De image rotator</p>
 <script type="text/javascript">
 	$("document").ready(function() {
-		setInterval("veranderFoto()",1000);
+		setInterval("veranderFoto()",100);
 
 		/*$("div#imagerotator img").attr({"width" : "200px",
 										"height":"180px"
