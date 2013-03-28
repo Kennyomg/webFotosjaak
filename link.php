@@ -1,3 +1,8 @@
+<script>
+$("document").ready(function(){
+	$("#linkdisappear").sortable();
+});
+</script>
 <ul id='linkdisappear'>
 	<li>
 		<a href='index.php?content=homepage'>home</a>
@@ -24,7 +29,7 @@
 				case 'root':
 					break;
 				case 'developer':
-					echo "<ul id='disappear'><li>
+					echo "<li>
 							<a href='index.php?content=developerzone/selectors'>selectors</a>
 						  </li>
 						  <li>
@@ -53,7 +58,41 @@
 						  </li>
 						  <li>
 							<a href='index.php?content=developerzone/animate'>animatie</a>
-						  </li> </ul>";
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/dialog'>dialog</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/slider'>slider</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/tabs'>tabs</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/datepicker'>datepicker</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/draggable'>draggable</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/droppable'>droppable</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/progressbar'>progressbar</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/sortable'>sortable</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/selectable'>selectable</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/accordion'>accordion</a>
+						  </li>
+						  <li>
+							<a href='index.php?content=developerzone/resizable'>resizable</a>
+						  </li>"
+						  ;
 					break;
 				default:
 					break;			

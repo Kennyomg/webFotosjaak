@@ -14,13 +14,13 @@
 	$("document").ready(function() {
 		
 		$("button").click(function(){
-			var cssObjectAfter = {"width" : "400", "height":"50", "background-color" : "RGBA(0,0,255,0.6)","top":"300","left":"150"};
+			var cssObjectAfter = {"width" : "400", "height":"50", "background-color" : "RGBA(0,0,255,0.6)","top":"100","left":"150"};
 			
 			
 			
 			$("#rooddivje").animate(cssObjectAfter,4000,doeNogIets);
 		});
-		document.onkeypress=function(e){
+		/*document.onkeypress=function(e){
  			var e=window.event || e
  			var position = 500;
  			var cssObject = {"width" : "250", "height":"200", "background-color" : "RGBA(255,0,0,0.6)","top":"300","left":"150"};
@@ -44,7 +44,7 @@
 		
 	});
 	function doeNogIets(){
-				var cssObjectBefore = {"width" : "200", "height":"200", "background-color" : "RGBA(255,0,0,0.6)","top":"1500","left":"400"};
+				var cssObjectBefore = {"width" : "200", "height":"200", "background-color" : "RGBA(255,0,0,0.6)","top":"150","left":"400"};
 				$("#rooddivje").animate(cssObjectBefore,2000);
 			}
 	
